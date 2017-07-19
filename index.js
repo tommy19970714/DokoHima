@@ -20,8 +20,12 @@ app.listen(app.get('port'), function() {
 var Botkit = require('botkit');
 var controller = Botkit.slackbot();
 var bot = controller.spawn({
-    token: "xb-214617764931-HUDSOTjYAnarrRM6O5tADU0o"
-}).startRTM();
+  token: "xoxb-214617764931-HUDSOTjYAnarrRM6O5tADU0o"
+}).startRTM(function(err, bot, payload){
+  if (err) {
+    throw new Error('Could not connect to Slack');
+  }
+});
 
 controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function(bot, message) {
 
