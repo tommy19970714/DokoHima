@@ -38,12 +38,12 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     var mode = message.text.substr(message.text.indexOf(7)+4,1);
     if(mode == 'd') {
         var detail = message.text.substr(message.text.indexOf(7)+5)
-        query('UPDATE building7 name = $1~ WHERE detail = $2~', [room, detail]);
-        query('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, "none", detail]);
+        db.one('UPDATE building7 name = $1~ WHERE detail = $2~', [room, detail]);
+        db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, "none", detail]);
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
-        query('UPDATE building7 name = $1~ WHERE status = $2~', [room, status]);
-        query('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, status, "none"]);
+        db.one('UPDATE building7 name = $1~ WHERE status = $2~', [room, status]);
+        db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, status, "none"]);
     }
 });
 
