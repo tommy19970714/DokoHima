@@ -27,9 +27,9 @@ var bot = controller.spawn({
   }
 });
 
-controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function(bot, message) {
-
-    controller.storage.users.get(message.user, function(err, user) {
-        bot.reply(message, 'OK!!');
-    });
+controller.on('direct_message,direct_mention,mention', function(bot, message) {
+    bot.reply(message, 'OK!!');
 });
+
+var pgp = require("pg-promise")(/*options*/);
+var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b6032ff080a0772e92a291df9b3@ec2-23-21-158-253.compute-1.amazonaws.com:5432/d2ep8884kuml1u");
