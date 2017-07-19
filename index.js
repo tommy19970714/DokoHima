@@ -31,5 +31,8 @@ var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b60
 controller.on('direct_message,direct_mention,mention', function(bot, message) {
     bot.reply(message, 'OK!!');
     bot.reply(message, message.text);
+    room = message.text.substr(message.text.indexOf(7), 4)
+    
+    query('INSERT INTO $1~ VALUES($2~, $3~, $4~)', ['building7', room, "a", "b"]);
 });
 
