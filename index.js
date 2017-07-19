@@ -29,6 +29,7 @@ var bot = controller.spawn({
 
 controller.on('direct_message,direct_mention,mention', function(bot, message) {
     bot.reply(message, 'OK!!');
+    bot.reply(message, message.text)
 });
 
 var pgp = require("pg-promise")(/*options*/);
