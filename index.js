@@ -31,8 +31,19 @@ var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b60
 controller.on('direct_message,direct_mention,mention', function(bot, message) {
     bot.reply(message, 'OK!!');
     bot.reply(message, message.text);
-    room = message.text.substr(message.text.indexOf(7), 4)
+    var room = message.text.substr(message.text.indexOf(7), 4);
     
-    query('INSERT INTO $1~ VALUES($2~, $3~, $4~)', ['building7', room, "a", "b"]);
+    console.log(room);
+
+    var mode = message.text.substr(message.text.indexOf(7)+4,1);
+    if(mode == 'd') {
+        var detail = message.text.substr(message.text.indexOf(7)+5)
+        query('UPDATE building7 name = $2~ WHERE detail = $3~;', [room, detail]);
+        query('INSERT INTO building7 VALUES($1~, $2~, $3~,now());', [room, "none", detail]);
+    } else {
+        var status = message.text.substr(message.text.indexOf(7)+4);
+        query('UPDATE building7 name = $2~ WHERE status = $3~;', [room, status]);
+        query('INSERT INTO building7 VALUES($1~, $2~, $3~,now());', [room, status, "none"]);
+    }
 });
 
