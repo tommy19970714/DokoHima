@@ -32,18 +32,15 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     bot.reply(message, 'OK!!');
     bot.reply(message, message.text);
     var room = message.text.substr(message.text.indexOf(7), 4);
-    
+
     console.log(room);
 
-    var mode = message.text.substr(message.text.indexOf(7)+4,1);
-    if(mode == 'd') {
+    var mode = message.text.substr(message.text.indexOf(7)+4,3);
+    if(mode.includes("d")) {
         var detail = message.text.substr(message.text.indexOf(7)+5)
-        db.none("UPDATE building7 SET room = '"+ room + "' WHERE detail = '" + detail + "'");
-        db.none("INSERT INTO building7 VALUES('" + room + "', 'none', '" + detail + "', now())");
+        db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
-        db.none("UPDATE building7 SET room = '"+ room + "' WHERE status = '" + status + "'");
-        db.none("INSERT INTO building7 VALUES('" + room + "', '" + status + "', 'none', now())");
+        db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
     }
 });
-
