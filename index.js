@@ -38,11 +38,11 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     var mode = message.text.substr(message.text.indexOf(7)+4,1);
     if(mode == 'd') {
         var detail = message.text.substr(message.text.indexOf(7)+5)
-        db.none("UPDATE building7 SET name = '"+ room + "' WHERE detail = '" + detail + "'");
+        db.none("UPDATE building7 SET room = '"+ room + "' WHERE detail = '" + detail + "'");
         db.none("INSERT INTO building7 VALUES('" + room + "', 'none', '" + detail + "', now())");
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
-        db.none("UPDATE building7 SET name = '"+ room + "' WHERE status = '" + status + "'");
+        db.none("UPDATE building7 SET room = '"+ room + "' WHERE status = '" + status + "'");
         db.none("INSERT INTO building7 VALUES('" + room + "', '" + status + "', 'none', now())");
     }
 });
