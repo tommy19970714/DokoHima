@@ -42,8 +42,22 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
         db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, "none", detail]);
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
-        db.one('UPDATE building7 SET name = $1~ WHERE status = $2~', [room, status]);
-        db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, status, "none"]);
+        db.one('UPDATE building7 SET name = $1~ WHERE status = $2~', [room, status]).then(() => {
+            // success;
+            console.log("update success");
+        })
+        .catch(error => {
+            // error;
+            console.log(error);
+        });
+        db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, status, "none"]).then(() => {
+            // success;
+            console.log("insert success");
+        })
+        .catch(error => {
+            // error;
+            console.log(error);
+        });
     }
 });
 
