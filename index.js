@@ -27,7 +27,7 @@ var bot = controller.spawn({
   }
 });
 var pgp = require("pg-promise")(/*options*/);
-var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b6032ff080a0772e92a291df9b3@ec2-23-21-158-253.compute-1.amazonaws.com:5432/d2ep8884kuml1u");
+var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b6032ff080a0772e92a291df9b3@ec2-23-21-158-253.compute-1.amazonaws.com:5432/d2ep8884kuml1u?ssl=true");
 controller.on('direct_message,direct_mention,mention', function(bot, message) {
     bot.reply(message, 'OK!!');
     bot.reply(message, message.text);
@@ -38,26 +38,12 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     var mode = message.text.substr(message.text.indexOf(7)+4,1);
     if(mode == 'd') {
         var detail = message.text.substr(message.text.indexOf(7)+5)
-        db.one('UPDATE building7 SET name = $1~ WHERE detail = $2~', [room, detail]);
-        db.one('INSERT INTO building7 VALUES($1~, $2~, $3~,now())', [room, "none", detail]);
+        db.none("UPDATE building7 SET name = '"+ room + "' WHERE detail = '" + detail + "'");
+        db.none("INSERT INTO building7 VALUES('" + room + "', 'none', '" + detail + "', now())");
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
-        db.one("UPDATE building7 SET name = '$1~' WHERE status = '$2~'", [room, status]).then(() => {
-            // success;
-            console.log("update success");
-        })
-        .catch(error => {
-            // error;
-            console.log(error);
-        });
-        db.one("INSERT INTO building7 VALUES('$1~', '$2~', '$3~', now())", [room, status, "none"]).then(() => {
-            // success;
-            console.log("insert success");
-        })
-        .catch(error => {
-            // error;
-            console.log(error);
-        });
+        db.none("UPDATE building7 SET name = '"+ room + "' WHERE status = '" + status + "'");
+        db.none("INSERT INTO building7 VALUES('" + room + "', '" + status + "', 'none', now())");
     }
 });
 
