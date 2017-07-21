@@ -9,18 +9,39 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
+app.locals.s7308 = 'none';
+app.locals.d7308 = 'none';
+app.locals.s7408 = 'none';
+app.locals.d7408 = 'none';
+app.locals.s7501 = 'none';
+app.locals.d7501 = 'none';
+app.locals.s7505 = 'none';
+app.locals.d7505 = 'none';
+app.locals.s7506 = 'none';
+app.locals.d7506 = 'none';
+
 function initTable() {
-  app.locals.s7308 = 'none';
-  app.locals.d7308 = 'none';
-  app.locals.s7408 = 'none';
-  app.locals.d7408 = 'none';
-  app.locals.s7501 = 'none';
-  app.locals.d7501 = 'none';
-  app.locals.s7505 = 'none';
-  app.locals.d7505 = 'none';
-  app.locals.s7506 = 'none';
-  app.locals.d7506 = 'none';
-}
+  db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
+    app.locals.s7308 = data.status;
+    app.locals.d7308 = data.detail;
+  });
+  db.one("SELECT * FROM building7 WHERE room='7408'").then(data => {
+    app.locals.s7408 = data.status;
+    app.locals.d7408 = data.detail;
+  });
+  db.one("SELECT * FROM building7 WHERE room='7501'").then(data => {
+    app.locals.s7501 = data.status;
+    app.locals.d7501 = data.detail;
+  });
+  db.one("SELECT * FROM building7 WHERE room='7505'").then(data => {
+    app.locals.s7505 = data.status;
+    app.locals.d7505 = data.detail;
+  });
+  db.one("SELECT * FROM building7 WHERE room='7506'").then(data => {
+    app.locals.s7506 = data.status;
+    app.locals.d7506 = data.detail;
+  });
+};
 
 app.get('/', function(request, response) {
   initTable();
