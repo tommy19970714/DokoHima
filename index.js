@@ -20,7 +20,7 @@ app.locals.d7505 = 'none';
 app.locals.s7506 = 'none';
 app.locals.d7506 = 'none';
 
-function roomUpdate(var room) {
+function roomUpdate(room) {
   switch (room) {
     case 7308 :
       db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
@@ -95,7 +95,6 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
         var detail = message.text.substr(message.text.indexOf(7)+5)
         db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
         roomUpdate(room);
-          });
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
         db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
