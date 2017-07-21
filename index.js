@@ -68,6 +68,19 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
+app.get('/data.json', function(request, response) {
+  response.contentType('application/json');
+  var data = [
+    { room: '7308', status: app.locals.s7308, detail: app.locals.d7308 },
+    { room: '7408', status: app.locals.s7408, detail: app.locals.d7408 },
+    { room: '7501', status: app.locals.s7501, detail: app.locals.d7501 },
+    { room: '7505', status: app.locals.s7505, detail: app.locals.d7505 },
+    { room: '7506', status: app.locals.s7506, detail: app.locals.d7506 }
+  ];
+  var dataJSON = JSON.stringify(data);
+  response.send(dataJSON);
+});
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
