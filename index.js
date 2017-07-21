@@ -9,20 +9,22 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
+function initTable() {
+  app.locals.s7308 = 'none';
+  app.locals.d7308 = 'none';
+  app.locals.s7408 = 'none';
+  app.locals.d7408 = 'none';
+  app.locals.s7501 = 'none';
+  app.locals.d7501 = 'none';
+  app.locals.s7505 = 'none';
+  app.locals.d7505 = 'none';
+  app.locals.s7506 = 'none';
+  app.locals.d7506 = 'none';
+}
+
 app.get('/', function(request, response) {
-  response.render('index', {title : 'タイトル',
-  s7308 : '眠い1',
-  s7408 : '眠い2',
-  s7501 : '眠い3',
-  s7505 : '眠い4',
-  s7506 : '眠い5',
-  d7308 : '眠い6',
-  d7408 : '眠い7',
-  d7501 : '眠い8',
-  d7505 : '眠い9',
-  d7506 : '眠い10'}
-);
-  response.render('pages/index');
+  initTable();
+  response.render('index');
 });
 
 app.listen(app.get('port'), function() {
@@ -53,6 +55,7 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
         db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
         db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
               console.log("---------------------------------------------")
+              app.locals.s7308 = data.status;
               console.log(data);
               console.log("---------------------------------------------")
               data_array.push(data);
@@ -62,8 +65,10 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
         db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
         db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
               console.log("---------------------------------------------")
+              app.locals.s7308 = data.status;
               console.log(data);
               console.log("---------------------------------------------")
+
           });
     }
 
