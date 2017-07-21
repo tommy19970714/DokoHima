@@ -20,31 +20,51 @@ app.locals.d7505 = 'none';
 app.locals.s7506 = 'none';
 app.locals.d7506 = 'none';
 
-function initTable() {
-  db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
-    app.locals.s7308 = data.status;
-    app.locals.d7308 = data.detail;
-  });
-  db.one("SELECT * FROM building7 WHERE room='7408'").then(data => {
-    app.locals.s7408 = data.status;
-    app.locals.d7408 = data.detail;
-  });
-  db.one("SELECT * FROM building7 WHERE room='7501'").then(data => {
-    app.locals.s7501 = data.status;
-    app.locals.d7501 = data.detail;
-  });
-  db.one("SELECT * FROM building7 WHERE room='7505'").then(data => {
-    app.locals.s7505 = data.status;
-    app.locals.d7505 = data.detail;
-  });
-  db.one("SELECT * FROM building7 WHERE room='7506'").then(data => {
-    app.locals.s7506 = data.status;
-    app.locals.d7506 = data.detail;
-  });
+function roomUpdate(var room) {
+  switch (room) {
+    case 7308 :
+      db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
+        app.locals.s7308 = data.status;
+        app.locals.d7308 = data.detail;
+      });
+      break;
+    case 7408 :
+      db.one("SELECT * FROM building7 WHERE room='7408'").then(data => {
+        app.locals.s7408 = data.status;
+        app.locals.d7408 = data.detail;
+      });
+      break;
+    case 7501 :
+      db.one("SELECT * FROM building7 WHERE room='7501'").then(data => {
+        app.locals.s7501 = data.status;
+        app.locals.d7501 = data.detail;
+      });
+      break;
+    case 7505 :
+      db.one("SELECT * FROM building7 WHERE room='7505'").then(data => {
+        app.locals.s7505 = data.status;
+        app.locals.d7505 = data.detail;
+      });
+      break;
+    case 7506 :
+      db.one("SELECT * FROM building7 WHERE room='7506'").then(data => {
+        app.locals.s7506 = data.status;
+        app.locals.d7506 = data.detail;
+      });
+      break;
+  }
+};
+
+function initAllRoom() {
+  roomUpdate(7308);
+  roomUpdate(7408);
+  roomUpdate(7501);
+  roomUpdate(7505);
+  roomUpdate(7506);
 };
 
 app.get('/', function(request, response) {
-  initTable();
+  initAllRoom();
   response.render('index');
 });
 
@@ -74,23 +94,12 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     if(mode.includes("d")) {
         var detail = message.text.substr(message.text.indexOf(7)+5)
         db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
-        db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
-              console.log("---------------------------------------------")
-              app.locals.s7308 = data.status;
-              console.log(data);
-              console.log("---------------------------------------------")
-              data_array.push(data);
+        roomUpdate(room);
           });
     } else {
         var status = message.text.substr(message.text.indexOf(7)+4);
         db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
-        db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
-              console.log("---------------------------------------------")
-              app.locals.s7308 = data.status;
-              console.log(data);
-              console.log("---------------------------------------------")
-
-          });
+        roomUpdate(room);
     }
 
 });
