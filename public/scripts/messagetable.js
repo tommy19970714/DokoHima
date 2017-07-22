@@ -18,13 +18,22 @@ class MessageTable extends React.Component {
   }
   render() {
     return (
-      <div>
-        {this.state.messages.map(function(message, i) {
-          return (
-            <li key={i}>{ message.message }</li>
-          )
-         }, this)}
-      </div>
+      <section className="card">
+        <div className="card-header">
+          {"5J Comemnt"}
+        </div>
+        <div className="card-block">
+          <div className="media">
+            <div className="media-body">
+              {this.state.messages.map(function(message, i) {
+                  return (
+                      <li key={i}>{ message.message }</li>
+                  )
+              }, this)}
+            </div>
+          </div>
+        </div>
+      </section>
     )
   }
 }
