@@ -7,7 +7,8 @@ var app = express();
 var ROOMDATA_FILE = path.join(__dirname, 'roomdata.json');
 
 var room_no = ['7306', '7408', '7501', '7505', '7506'];
-var room = new Array(5);
+var room_array = new Array(5);
+
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -21,12 +22,17 @@ app.use(function(req, res, next) {
     next();
 });
 
-function roomUpdate(room){
-  db.any("SELECT * FROM building7 where room='" + room + "'").then(data => {
-    if(room_no.indexOf(data.room) >= 0){
-      room[room_no.indexOf(element.room)] = data;
-    }
-  });
+function updateRoom(room){
+  updateAllRoom(function(){});
+  db.one("SELECT * FROM building7 where room='" + room + "'")
+    .then(data => {
+      if(room_no.indexOf(data.room) >= 0){
+        room_array[room_no.indexOf(data.room)] = data;
+      }
+    })
+    .catch(function(error) {
+      console.error("updateRoom error");
+    });
 }
 
 function updateAllRoom(callback) {
@@ -34,7 +40,7 @@ function updateAllRoom(callback) {
     .then(data => {
       data.map(function(element){
         if(room_no.indexOf(element.room) >= 0){
-          room[room_no.indexOf(element.room)] = element;
+          room_array[room_no.indexOf(element.room)] = element;
         }
       });
       callback();
@@ -45,13 +51,13 @@ function updateAllRoom(callback) {
 }
 
 app.get('/api/roomdata', function(req, res) {
-  var dataJSON = JSON.stringify(room);
+  var dataJSON = JSON.stringify(room_array);
   res.send(dataJSON);
 });
 
 app.get('/api/roomdataupdateforce', function(req, res) {
   updateAllRoom(function(){
-    var dataJSON = JSON.stringify(room);
+    var dataJSON = JSON.stringify(room_array);
     res.send(dataJSON);
   });
 });
@@ -83,13 +89,13 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     if(mode.includes("d")) {
       var detail = message.text.substr(message.text.indexOf(7)+5)
       db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'")
-      .then(() => {roomUpdate(room);})
+      .then(() => {updateRoom(room);})
       .catch(error => {console.error(room + "couldn't insert")});
 
     } else {
       var status = message.text.substr(message.text.indexOf(7)+4);
       db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'")
-      .then(() => {roomUpdate(room);})
+      .then(() => {updateRoom(room);})
       .catch(error => {console.error(room + "couldn't insert")});
     }
   } else {
