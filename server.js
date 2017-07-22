@@ -6,7 +6,7 @@ var app = express();
 
 var ROOMDATA_FILE = path.join(__dirname, 'roomdata.json');
 
-var room_no = ['7308', '7408', '7501', '7505', '7506'];
+var room_no = ['7306', '7408', '7501', '7505', '7506'];
 var room = new Array(5);
 
 app.set('port', (process.env.PORT || 3000));
@@ -29,20 +29,31 @@ function roomUpdate(room){
   });
 }
 
-function updateAllRoom() {
-  db.any("SELECT * FROM building7").then(data => {
-    data.map(function(element){
-      if(room_no.indexOf(element.room) >= 0){
-        room[room_no.indexOf(element.room)] = element;
-      }
+function updateAllRoom(callback) {
+  db.any("SELECT * FROM building7")
+    .then(data => {
+      data.map(function(element){
+        if(room_no.indexOf(element.room) >= 0){
+          room[room_no.indexOf(element.room)] = element;
+        }
+      });
+      callback();
+    })
+    .catch(function(error) {
+      console.error("updateAllRoom error");
     });
-  });
 }
 
 app.get('/api/roomdata', function(req, res) {
-  updateAllRoom();
   var dataJSON = JSON.stringify(room);
   res.send(dataJSON);
+});
+
+app.get('/api/roomdataupdateforce', function(req, res) {
+  updateAllRoom(function(){
+    var dataJSON = JSON.stringify(room);
+    res.send(dataJSON);
+  });
 });
 
 app.listen(app.get('port'), function() {
