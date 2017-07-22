@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/reactjs/react-tutorial",
   "engines": {
-    "node": "0.12.x"
+    "node": "7.3.0",
+    "npm": "4.0.5"
   }
 }
