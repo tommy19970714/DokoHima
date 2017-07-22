@@ -2,9 +2,14 @@ class RoomsTable extends React.Component {
  constructor(props) {
   super(props)
   this.state = { rows: [] }
+  socket.on('room', (payload) => {
+      setTimeout(() => {
+        this.handleInterval()
+      }, 500)
+    })
  }
  componentDidMount() {
-  window.setInterval(() => this.handleInterval(), 10000)
+   this.handleInterval()
  }
  handleInterval() {
   fetch('/api/roomdata')
