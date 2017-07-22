@@ -73,22 +73,26 @@ var bot = controller.spawn({
 var pgp = require("pg-promise")(/*options*/);
 var db = pgp("postgres://hboqhlvlytycft:da7825923aaf062e0250769f17ca45e216f21b6032ff080a0772e92a291df9b3@ec2-23-21-158-253.compute-1.amazonaws.com:5432/d2ep8884kuml1u?ssl=true");
 controller.on('direct_message,direct_mention,mention', function(bot, message) {
-    bot.reply(message, 'OK!!');
-    bot.reply(message, message.text);
-    var room = message.text.substr(message.text.indexOf(7), 4);
+  bot.reply(message, 'OK!!');
+  bot.reply(message, message.text);
+  var room = message.text.substr(message.text.indexOf(7), 4);
 
-    console.log(room);
-    if(room_no.indexOf(room) != -1){
-      console.log(room + "is registed");
-      var mode = message.text.substr(message.text.indexOf(7)+4,3);
-      if(mode.includes("d")) {
-          var detail = message.text.substr(message.text.indexOf(7)+5)
-          db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
-          roomUpdate(room);
-      } else {
-          var status = message.text.substr(message.text.indexOf(7)+4);
-          db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
-          roomUpdate(room);
-      }
+  if(room_no.indexOf(room) != -1){
+    console.log(room + "is registed");
+    var mode = message.text.substr(message.text.indexOf(7)+4,3);
+    if(mode.includes("d")) {
+      var detail = message.text.substr(message.text.indexOf(7)+5)
+      db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'")
+      .then(() => {roomUpdate(room);})
+      .catch(error => {console.error(room + "couldn't insert")});
+
+    } else {
+      var status = message.text.substr(message.text.indexOf(7)+4);
+      db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'")
+      .then(() => {roomUpdate(room);})
+      .catch(error => {console.error(room + "couldn't insert")});
     }
+  } else {
+    console.log(room + "is not registed");
+  }
 });
