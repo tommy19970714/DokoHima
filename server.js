@@ -23,7 +23,6 @@ app.use(function(req, res, next) {
 });
 
 function updateRoom(room){
-  updateAllRoom(function(){});
   db.one("SELECT * FROM building7 where room='" + room + "'")
     .then(data => {
       if(room_no.indexOf(data.room) >= 0){
@@ -51,6 +50,7 @@ function updateAllRoom(callback) {
 }
 
 app.get('/api/roomdata', function(req, res) {
+  updateAllRoom(function(){});
   var dataJSON = JSON.stringify(room_array);
   res.send(dataJSON);
 });
