@@ -33,7 +33,7 @@ class RoomsTable extends React.Component {
   return (
     <div>
       <table className="regularTable">
-      {<tr><td>room</td><td>status</td><td>detail</td></tr>}
+      {<tr><td>room</td><td>混雑状況</td><td>追加情報</td></tr>}
       {this.state.rows.map(row => <tr><td>{ row.room }</td><td>{ row.status }</td><td>{ row.detail }</td></tr>)}
       </table>
       <table className="messageTable">

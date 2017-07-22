@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Welcome</title>
-    <!-- Not present in the tutorial. Just for basic styling. -->
-    <!--<link rel="stylesheet" href="css/base.css" />-->
+
+    <link rel="stylesheet" href="css/base.css" />
     <script src="https://unpkg.com/react@15.3.0/dist/react.js"></script>
     <script src="https://unpkg.com/react-dom@15.3.0/dist/react-dom.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
@@ -14,12 +14,6 @@
     <script>
       var socket = io();
     </script>
-
-    <style>
-        table.regularTable, th, td {
-        border: 1px solid;
-    }
-    </style>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -34,13 +28,16 @@
     </script>
 
   </head>
+
   <body>
+
     <div id="content"></div>
     <script type="text/babel" src="scripts/roomstable.js"></script>
-  </body>
 
-  <ul class="bxslider">
-		<li><img src="../images/7506_1.jpg"></li>
-    <li><img src="../images/7506_2.jpg"></li>
-	</ul>
+    <ul class="bxslider">
+  		<li><img src="../images/7506_1.jpg"></li>
+      <li><img src="../images/7506_2.jpg"></li>
+  	</ul>
+
+  </body>
 </html>
