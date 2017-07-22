@@ -35,3 +35,24 @@ table.type07 td {
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
+
+.wraper_div2{
+  overflow: hidden;
+  height:400px;
+	width:100%;
+	margin:auto;
+}
+
+.div_box2{
+	width:50%;
+	float:left;
+}
+
+.wraper_div3{
+	width:100%;
+	margin:auto;
+}
+.div_box3{
+	width:33%;
+	float:left;
+}
