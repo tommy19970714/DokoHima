@@ -7,7 +7,7 @@ var app = express();
 var ROOMDATA_FILE = path.join(__dirname, 'roomdata.json');
 
 var room_no = ['7306', '7408', '7501', '7505', '7506'];
-var room_array = new Array(5);
+var room_array = [{"room":"none","status":" none","detail":"none","time":"none"},{"room":"none","status":" none","detail":"none","time":"none"},{"room":"none","status":"none","detail":"none","time":"none"},{"room":"none","status":" none","detail":"none","time":"none"},{"room":"none","status":" none","detail":"none","time":"none"}];
 
 
 app.set('port', (process.env.PORT || 3000));
