@@ -6,6 +6,7 @@
   "description": "Code from the React tutorial.",
   "main": "server.js",
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "^1.4.3",
     "botkit": "^0.5.5",
     "express": "^4.4.5",
