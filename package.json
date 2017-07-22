@@ -1,34 +1,37 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.6",
-  "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "6.11.1"
-  },
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
+  "name": "react-tutorial",
+  "version": "0.0.0",
+  "private": true,
+  "license": "see LICENSE file",
+  "description": "Code from the React tutorial.",
+  "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.4.3",
     "botkit": "^0.5.5",
-    "ejs": "2.5.6",
-    "express": "^4.15.2",
-    "express-generator": "^4.15.0"
+    "express": "^4.4.5",
+    "pg-promise": "^6.3.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heroku/node-js-getting-started.git"
+    "url": "https://github.com/reactjs/react-tutorial.git"
   },
   "keywords": [
-    "node",
-    "heroku",
-    "express"
+    "react",
+    "tutorial",
+    "comment",
+    "example"
   ],
-  "license": "MIT",
+  "author": "petehunt",
   "bugs": {
-    "url": "https://github.com/heroku/node-js-getting-started/issues"
+    "url": "https://github.com/reactjs/react-tutorial/issues"
   },
-  "homepage": "https://github.com/heroku/node-js-getting-started#readme",
-  "devDependencies": {},
-  "author": "toshiki"
+  "homepage": "https://github.com/reactjs/react-tutorial",
+  "engines": {
+    "node": "0.12.x"
+  }
 }
