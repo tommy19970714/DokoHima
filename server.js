@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+var room_arry = ['7308', '7408', '7501', '7505', '7506'];
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 var ROOMDATA_FILE = path.join(__dirname, 'roomdata.json');
@@ -109,16 +110,17 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     var room = message.text.substr(message.text.indexOf(7), 4);
 
     console.log(room);
-
-    var mode = message.text.substr(message.text.indexOf(7)+4,3);
-    if(mode.includes("d")) {
-        var detail = message.text.substr(message.text.indexOf(7)+5)
-        db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
-        roomUpdate(room);
-    } else {
-        var status = message.text.substr(message.text.indexOf(7)+4);
-        db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
-        roomUpdate(room);
+    if(room_arry.indexOf(room) != -1){
+      console.log(room + "is registed");
+      var mode = message.text.substr(message.text.indexOf(7)+4,3);
+      if(mode.includes("d")) {
+          var detail = message.text.substr(message.text.indexOf(7)+5)
+          db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'");
+          roomUpdate(room);
+      } else {
+          var status = message.text.substr(message.text.indexOf(7)+4);
+          db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'");
+          roomUpdate(room);
+      }
     }
-
 });
