@@ -4,10 +4,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var room_arry = ['7308', '7408', '7501', '7505', '7506'];
-
-var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 var ROOMDATA_FILE = path.join(__dirname, 'roomdata.json');
+
+var room_no = ['7308', '7408', '7501', '7505', '7506'];
+var room = new Array(5);
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -21,70 +21,27 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.locals.s7308 = 'none';
-app.locals.d7308 = 'none';
-app.locals.s7408 = 'none';
-app.locals.d7408 = 'none';
-app.locals.s7501 = 'none';
-app.locals.d7501 = 'none';
-app.locals.s7505 = 'none';
-app.locals.d7505 = 'none';
-app.locals.s7506 = 'none';
-app.locals.d7506 = 'none';
-
-function roomUpdate(room) {
-  switch (room) {
-    case '7308' :
-      db.one("SELECT * FROM building7 WHERE room='7308'").then(data => {
-        app.locals.s7308 = data.status;
-        app.locals.d7308 = data.detail;
-      });
-      break;
-    case '7408' :
-      db.one("SELECT * FROM building7 WHERE room='7408'").then(data => {
-        app.locals.s7408 = data.status;
-        app.locals.d7408 = data.detail;
-      });
-      break;
-    case '7501' :
-      db.one("SELECT * FROM building7 WHERE room='7501'").then(data => {
-        app.locals.s7501 = data.status;
-        app.locals.d7501 = data.detail;
-      });
-      break;
-    case '7505' :
-      db.one("SELECT * FROM building7 WHERE room='7505'").then(data => {
-        app.locals.s7505 = data.status;
-        app.locals.d7505 = data.detail;
-      });
-      break;
-    case '7506' :
-      db.one("SELECT * FROM building7 WHERE room='7506'").then(data => {
-        app.locals.s7506 = data.status;
-        app.locals.d7506 = data.detail;
-      });
-      break;
-  }
-};
+function roomUpdate(room){
+  db.any("SELECT * FROM building7 where room='" + room + "'").then(data => {
+    if(room_no.indexOf(data.room) >= 0){
+      room[room_no.indexOf(element.room)] = data;
+    }
+  });
+}
 
 function updateAllRoom() {
-  roomUpdate(7308);
-  roomUpdate(7408);
-  roomUpdate(7501);
-  roomUpdate(7505);
-  roomUpdate(7506);
-};
+  db.any("SELECT * FROM building7").then(data => {
+    data.map(function(element){
+      if(room_no.indexOf(element.room) >= 0){
+        room[room_no.indexOf(element.room)] = element;
+      }
+    });
+  });
+}
 
 app.get('/api/roomdata', function(req, res) {
-  //response.contentType('application/json');
-  var data = [
-    { room: '7308', status: app.locals.s7308, detail: app.locals.d7308 },
-    { room: '7408', status: app.locals.s7408, detail: app.locals.d7408 },
-    { room: '7501', status: app.locals.s7501, detail: app.locals.d7501 },
-    { room: '7505', status: app.locals.s7505, detail: app.locals.d7505 },
-    { room: '7506', status: app.locals.s7506, detail: app.locals.d7506 }
-  ];
-  var dataJSON = JSON.stringify(data);
+  updateAllRoom();
+  var dataJSON = JSON.stringify(room);
   res.send(dataJSON);
 });
 
@@ -110,7 +67,7 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     var room = message.text.substr(message.text.indexOf(7), 4);
 
     console.log(room);
-    if(room_arry.indexOf(room) != -1){
+    if(room_no.indexOf(room) != -1){
       console.log(room + "is registed");
       var mode = message.text.substr(message.text.indexOf(7)+4,3);
       if(mode.includes("d")) {
