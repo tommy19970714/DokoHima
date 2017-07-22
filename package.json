@@ -9,7 +9,8 @@
     "body-parser": "^1.4.3",
     "botkit": "^0.5.5",
     "express": "^4.4.5",
-    "pg-promise": "^6.3.5"
+    "pg-promise": "^6.3.5",
+    "socket.io": "^2.0.3"
   },
   "devDependencies": {},
   "scripts": {
