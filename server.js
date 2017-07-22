@@ -62,9 +62,23 @@ app.get('/api/roomdataupdateforce', function(req, res) {
   });
 });
 
-app.listen(app.get('port'), function() {
+const server = app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
+
+//-----------------------------------------socket----------------------------------------//
+
+const io = require('socket.io')(server);
+const socket = io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('room', function(msg){
+    console.log(msg);
+  });
+});
+
 
 //-----------------------------------------slack----------------------------------------//
 var Botkit = require('botkit');
@@ -101,4 +115,5 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
   } else {
     console.log(room + "is not registed");
   }
+  io.emit('room', 'bot recieved!');
 });
