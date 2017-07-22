@@ -36,9 +36,27 @@ function updateAllRoom(callback) {
     });
 }
 
+function getMessages(callback) {
+  db.any("SELECT * FROM messages ORDER BY time DESC")
+    .then(data => {
+      console.log(data);
+      callback(data);
+    })
+    .catch(function(error) {
+      console.error("updateAllRoom error");
+    });
+}
+
 app.get('/api/roomdata', function(req, res) {
   updateAllRoom(function(){
     var dataJSON = JSON.stringify(room_array);
+    res.send(dataJSON);
+  });
+});
+
+app.get('/api/messagesData', function(req, res) {
+  getMessages(function(messages){
+    var dataJSON = JSON.stringify(messages);
     res.send(dataJSON);
   });
 });
@@ -85,14 +103,18 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
       var detail = message.text.substr(message.text.indexOf(7)+5)
       db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'")
       .catch(error => {console.error(room + "couldn't insert")});
+      io.emit('room', 'bot recieved!');
 
     } else {
       var status = message.text.substr(message.text.indexOf(7)+4);
       db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'")
       .catch(error => {console.error(room + "couldn't insert")});
+      io.emit('room', 'bot recieved!');
     }
   } else {
-    console.log(room + "is not registed");
+    db.none("insert into messages(message, time) values('"+ message.text +"', now())");
+    console.log("push message : " + message.text);
+    var emitJson = [{ id: '0', message: message.text, time: new Date() }];
+    io.emit('message', emitJson);
   }
-  io.emit('room', 'bot recieved!');
 });
