@@ -7,26 +7,15 @@ class RoomsTable extends React.Component {
         this.handleInterval()
       }, 500)
     })
-  socket.on('message', (newmessage) => {
-      this.setState({messages: newmessage.concat(this.state.messages)})
-    })
  }
  componentDidMount() {
    this.handleInterval()
-   this.getMessage()
  }
  handleInterval() {
   fetch('/api/roomdata')
    .then(response => response.json())
    .then(json => {
     this.setState({ rows: json })
-   })
- }
- getMessage() {
-  fetch('/api/messagesData')
-   .then(response => response.json())
-   .then(json => {
-    this.setState({ messages: json })
    })
  }
  render() {
@@ -37,11 +26,14 @@ class RoomsTable extends React.Component {
         {<tr><th scope="cols">room</th><th scope="cols">混雑状況</th><th scope="cols">追加情報</th></tr>}
       </thead>
       <tbody>
-        {this.state.rows.map(row => <tr><th scope="row">{ row.room }</th><td scope="row">{ row.status }</td><td scope="row">{ row.detail }</td></tr>)}
+        {this.state.rows.map(function(row, i) {
+        return (
+          <tr key={i}><th scope="row">{ row.room }</th>
+          <td scope="row">{ row.status }</td>
+          <td scope="row">{ row.detail }</td></tr>
+        )
+        }, this)}
       </tbody>
-      </table>
-      <table className="messageTable">
-      {this.state.messages.map(message => <tr>{ message.message }</tr>)}
       </table>
     </div>
   )
@@ -50,5 +42,5 @@ class RoomsTable extends React.Component {
 
 ReactDOM.render(
   <RoomsTable />,
-  document.getElementById('content')
+  document.getElementById('room-content')
 );
