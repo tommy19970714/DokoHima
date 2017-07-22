@@ -8,7 +8,6 @@
   "dependencies": {
     "async": "^2.5.0",
     "body-parser": "^1.4.3",
-    "bootstrap": "^4.0.0-alpha.6",
     "botkit": "^0.5.5",
     "express": "^4.4.5",
     "jquery": "^3.2.1",
