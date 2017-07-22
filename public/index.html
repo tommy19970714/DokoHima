@@ -14,15 +14,33 @@
     <script>
       var socket = io();
     </script>
+
     <style>
         table.regularTable, th, td {
         border: 1px solid;
     }
     </style>
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="jquery.bxslider.min.js"></script>
+      <link href="css/jquery.bxslider.css" rel="stylesheet" />
+      <script type="text/javascript">
+      $(document).ready(function(){
+        $('.bxslider').bxSlider({
+          auto: true,
+        });
+      });
+    </script>
+
   </head>
   <body>
     <div id="content"></div>
     <script type="text/babel" src="scripts/roomstable.js"></script>
   </body>
+
+  <ul class="bxslider">
+		<li><img src="../images/7506_1.jpg"></li>
+    <li><img src="../images/7506_2.jpg"></li>
+	</ul>
 </html>
