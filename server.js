@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
 
 function updateAllRoom(callback) {
   db.any("SELECT * FROM building7")
-    .then(data => {
+    .then(function(data){
       data.map(function(element){
         if(room_no.indexOf(element.room) >= 0){
           room_array[room_no.indexOf(element.room)] = element;
@@ -38,7 +38,7 @@ function updateAllRoom(callback) {
 
 function getMessages(callback) {
   db.any("SELECT * FROM messages ORDER BY time DESC")
-    .then(data => {
+    .then(function(data) {
       console.log(data);
       callback(data);
     })
@@ -102,13 +102,13 @@ controller.on('direct_message,direct_mention,mention', function(bot, message) {
     if(mode.includes("d")) {
       var detail = message.text.substr(message.text.indexOf(7)+5)
       db.none("INSERT INTO building7 VALUES ('" + room + "','none','"+ detail +"', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET detail='" + detail +"'")
-      .catch(error => {console.error(room + "couldn't insert")});
+      .catch(function(error) {console.error(room + "couldn't insert")});
       io.emit('room', 'bot recieved!');
 
     } else {
       var status = message.text.substr(message.text.indexOf(7)+4);
       db.none("INSERT INTO building7 VALUES ('" + room + "','"+ status +"','none', now()) ON CONFLICT ON CONSTRAINT building7_pkey DO UPDATE SET status='" + status +"'")
-      .catch(error => {console.error(room + "couldn't insert")});
+      .catch(function(error) {console.error(room + "couldn't insert")});
       io.emit('room', 'bot recieved!');
     }
   } else {
