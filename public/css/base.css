@@ -1,3 +1,33 @@
-table.regularTable, th, td {
-  border: 1px solid;
+table.type07 {
+	border-collapse: collapse;
+	text-align: left;
+	line-height: 1.5;
+	border: 1px solid #ccc;
+}
+table.type07 thead {
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	background: #04162e;
+}
+table.type07 thead th {
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	color: #fff;
+  text-align: center;
+}
+table.type07 tbody th {
+	width: 20%;
+	padding: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
+	background: #efefef;
+  text-align: center;
+}
+table.type07 td {
+	width: 40%;
+	padding: 10px;
+	vertical-align: top;
+	border-bottom: 1px solid #ccc;
 }

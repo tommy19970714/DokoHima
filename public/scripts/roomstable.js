@@ -32,9 +32,13 @@ class RoomsTable extends React.Component {
  render() {
   return (
     <div>
-      <table className="regularTable">
-      {<tr><td>room</td><td>混雑状況</td><td>追加情報</td></tr>}
-      {this.state.rows.map(row => <tr><td>{ row.room }</td><td>{ row.status }</td><td>{ row.detail }</td></tr>)}
+      <table className="type07">
+      <thead>
+        {<tr><th scope="cols">room</th><th scope="cols">混雑状況</th><th scope="cols">追加情報</th></tr>}
+      </thead>
+      <tbody>
+        {this.state.rows.map(row => <tr><th scope="row">{ row.room }</th><td scope="row">{ row.status }</td><td scope="row">{ row.detail }</td></tr>)}
+      </tbody>
       </table>
       <table className="messageTable">
       {this.state.messages.map(message => <tr>{ message.message }</tr>)}
