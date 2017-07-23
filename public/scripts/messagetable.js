@@ -26,7 +26,9 @@ class MessageTable extends React.Component {
                         <a href="#" className="icon-rounded">5J</a>
                       </div>
                       <div className="media-body">
-                        <h4 className="media-heading">{ message.time }</h4>
+                        <h4 className="media-heading">
+                          {new Date(message.time).toLocaleString()}
+                        </h4>
                         <div>{ message.message }</div>
                       </div>
                     </div>
